@@ -14,7 +14,7 @@ const platform = os.platform();
 
 var appName = ''
 if (pack !== null) {
-    appName = (pack.productName ? pack.productName : pack.name);
+    appName = pack.name
 }
 
 let userData = '';
@@ -108,7 +108,6 @@ function valid() {
  * @param  {string} arguments[1] [Location of the database file] (Optional)
  * @param  {string} arguments[2] [Row object]
  * @param  {Function} arguments[3] [Callback function]
- * @returns {(number|undefined)} [ID of the inserted row]
  */
 // function insertTableContent(tableName, tableRow, callback) {
 function insertTableContent() {
@@ -144,7 +143,7 @@ function insertTableContent() {
             })
 
             callback(true, "Object written successfully!");
-            return id;
+            return;
         } catch (e) {
             callback(false, "Error writing object.");
             return;
@@ -576,10 +575,10 @@ function search() {
 
 /**
  * Delete a row specified.
- * @param {*} tableName 
+ * @param {*} tableName
  * @param {string} arguments[1] [Location of the database file] (Optional)
- * @param {*} where 
- * @param {*} callback 
+ * @param {*} where
+ * @param {*} callback
  */
 // function deleteRow(tableName, where, callback) {
 function deleteRow() {
@@ -602,6 +601,7 @@ function deleteRow() {
     let exists = fs.existsSync(fname);
 
     let whereKeys = Object.keys(where);
+    console.log('at electron-DB'+whereKeys);
 
     if (exists) {
         let table = JSON.parse(fs.readFileSync(fname));
@@ -618,10 +618,13 @@ function deleteRow() {
                     if (rows[i].hasOwnProperty(whereKeys[j])) {
                         if (rows[i][whereKeys[j]] === where[whereKeys[j]]) {
                             matched++;
-                            matchedIndices.push(i);
+                            if(matched === whereKeys.length){
+                                matchedIndices.push(i);
+                            }
                         }
                     }
                 }
+                matched = 0;
             }
 
             if (matchedIndices.length === 0) {
@@ -629,9 +632,7 @@ function deleteRow() {
                 return;
             }
 
-            for (let k = 0; k < matchedIndices.length; k++) {
-                rows.splice(matchedIndices[k], 1);
-            }
+            for (let k = 0; k < matchedIndices.length; k++) {rows.splice(matchedIndices[k], 1);}
 
             // Create a new object and pass the rows
             let obj = new Object();
