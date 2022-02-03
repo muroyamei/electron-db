@@ -627,9 +627,6 @@ function deleteRow() {
                 matched = 0;
             }
 
-            console.log('allmatch:');
-            console.log(matchedIndices);
-
             if (matchedIndices.length === 0) {
                 callback(false, 'Row does not exist!');
                 return;
