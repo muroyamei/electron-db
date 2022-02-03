@@ -627,12 +627,15 @@ function deleteRow() {
                 matched = 0;
             }
 
+            console.log('allmatch:');
+            console.log(matchedIndices);
+
             if (matchedIndices.length === 0) {
                 callback(false, 'Row does not exist!');
                 return;
             }
 
-            for (let k = 0; k < matchedIndices.length; k++) {rows.splice(matchedIndices[k], 1);}
+            for (let k = matchedIndices.length - 1; k >= 0; --k) {rows.splice(matchedIndices[k], 1);}
 
             // Create a new object and pass the rows
             let obj = new Object();
