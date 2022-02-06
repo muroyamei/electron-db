@@ -142,14 +142,14 @@ function insertTableContent() {
 
             })
 
-            callback(true, "Object written successfully!");
+            callback(true, id);
             return;
         } catch (e) {
-            callback(false, "Error writing object.");
+            callback(false, null);
             return;
         }
     }
-    callback(false, "Table/json file doesn't exist!");
+    callback(false, null);
     return;
 }
 
